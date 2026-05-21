@@ -5,4 +5,10 @@ add_executable(microOSSL_tests
 )
 
 find_package(GTest REQUIRED)
-target_link_libraries(microOSSL_tests PRIVATE GTest::GTest GTest::Main)
+find_package(OpenSSL REQUIRED)
+target_link_libraries(microOSSL_tests 
+  PRIVATE 
+  GTest::GTest
+  GTest::Main
+  openssl::openssl
+)
