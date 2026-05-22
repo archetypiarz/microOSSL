@@ -5,6 +5,12 @@ from conan.tools.cmake import cmake_layout, CMake, CMakeToolchain
 class MicroOSSL(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeDeps"
+    options = {
+        "with_compile_commands": [True, False],
+    }
+    default_options = {
+        "with_compile_commands": True
+    }
 
     def requirements(self):
         self.requires("openssl/3.6.2")
@@ -17,8 +23,9 @@ class MicroOSSL(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
-        #if self.options.with_fmt:
-        #    tc.variables["WITH_FMT"] = True
+        if self.options.with_compile_commands:
+            tc.variables["CMAKE_EXPORT_COMPILE_COMMANDS"] = True
+            tc.cache_variables["CMAKE_EXPORT_COMPILE_COMMANDS"] = True
         tc.generate()
 
     def build(self):
